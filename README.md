@@ -1,72 +1,79 @@
-## demo app - developing with Docker
+# 🐳 MongoDB + Node.js Profile Manager
 
-This demo app shows a simple user profile app set up using 
-- index.html with pure js and css styles
-- nodejs backend with express module
-- mongodb for data storage
+This project demonstrates a containerized full-stack environment. It uses **Docker Compose** to orchestrate a MongoDB database and a MongoExpress administration interface, which connects to a Node.js user profile application.
 
-All components are docker-based
+---
 
-### With Docker
+## 🚀 Features
 
-#### To start the application
+- **Containerized Database:** MongoDB runs in an isolated environment.
+- **Database GUI:** Includes MongoExpress for easy data visualization.
+- **Full-Stack Integration:** A Node.js frontend/backend that persists user profile data.
 
-Step 1: Create docker network
+---
 
-    docker network create mongo-network 
+## 🛠 Prerequisites
 
-Step 2: start mongodb 
+Before you begin, ensure you have the following installed:
 
-    docker run -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --name mongodb --net mongo-network mongo    
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [Node.js](https://nodejs.org/) (for running the local server)
 
-Step 3: start mongo-express
-    
-    docker run -d -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=password --net mongo-network --name mongo-express -e ME_CONFIG_MONGODB_SERVER=mongodb -e ME_CONFIG_MONGODB_URL=mongodb://mongodb:27017 mongo-express   
+---
 
-_NOTE: creating docker-network in optional. You can start both containers in a default network. In this case, just emit `--net` flag in `docker run` command_
+## 🏃 Getting Started
 
-Step 4: open mongo-express from browser
+### 1. Spin up the Database
 
-    http://localhost:8081
+Run the following command to start the MongoDB and MongoExpress containers:
 
-Step 5: create `user-account` _db_ and `users` _collection_ in mongo-express
+```bash
+docker-compose -f mongo.yaml up -d
+```
 
-Step 6: Start your nodejs application locally - go to `app` directory of project 
+Note: The `-d` flag runs the containers in "detached" mode so they stay running in the background.
 
-    cd app
-    npm install 
-    node server.js
-    
-Step 7: Access you nodejs application UI from browser
+### 2. Start the Application
 
-    http://localhost:3000
+Ensure your Node.js environment is ready, then launch the server:
 
-### With Docker Compose
+```bash
+node server.js
+```
 
-#### To start the application
+### 3. Access the Project
 
-Step 1: start mongodb and mongo-express
+Once the services are running, you can access them at:
 
-    docker-compose -f docker-compose.yaml up
-    
+- **User Interface:** http://localhost:3000
+- **MongoExpress (DB Admin):** http://localhost:8081
+
+---
+
+### Pro-Tip for GitHub
+
+If you are using the GitHub web editor, make sure you are in the **"Edit"** tab and not the **"Preview"** tab when pasting. Also, ensure there is a blank line before and after every triple backtick (` ` `) to prevent the code from bleeding into the regular text.
+
+**Would you like me to also provide the `mongo.yaml` code in a copy-paste format to ensure your ports match the ones listed above?**
+
 _You can access the mongo-express under localhost:8080 from your browser_
-    
+
 Step 2: in mongo-express UI - create a new database "user-account"
 
-Step 3: in mongo-express UI - create a new collection "users" in the database "user-account"       
-    
-Step 4: start node server 
+Step 3: in mongo-express UI - create a new collection "users" in the database "user-account"
+
+Step 4: start node server
 
     cd app
     npm install
     node server.js
-    
-Step 5: access the nodejs application from browser 
+
+Step 5: access the nodejs application from browser
 
     http://localhost:3000
 
 #### To build a docker image from the application
 
-    docker build -t my-app:1.0 .       
-    
+    docker build -t my-app:1.0 .
+
 The dot "." at the end of the command denotes location of the Dockerfile.
